@@ -1,0 +1,15 @@
+{
+	"database": {
+		"enabled": true,
+		"defaultInstance": "instanceMongo",
+		"PORT": 3001,
+		"instances": {
+			"instanceMongo": {
+				"enabled": true,
+				"protocol": "Mongo",
+				"useStringID": true,
+				"url": "mongodb://127.0.0.1:27017/petrolPosDb"
+			}
+		}
+	}
+}
