@@ -40,4 +40,4 @@ var purchaseRecordSchema = new Schema(
 	{ timestamps: true }
 );
 
-module.exports = mongoose.model('PurchaseRecords', purchaseRecordSchema);
+module.exports = mongoose.model('purchases', purchaseRecordSchema);

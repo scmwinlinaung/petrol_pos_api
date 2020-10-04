@@ -40,4 +40,4 @@ var saleRecordSchema = new Schema(
 	{ timestamps: true }
 );
 
-module.exports = mongoose.model('SaleRecords', saleRecordSchema);
+module.exports = mongoose.model('sales', saleRecordSchema);

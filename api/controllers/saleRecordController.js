@@ -1,10 +1,9 @@
 'use strict';
 
 var SaleRecord = require('../models/saleRecordModel');
-const { exists } = require('fs');
 
 exports.list_all_sale_records = (req, res) => {
-	console.log('Finding all Sale Records...');
+	console.log('Finding all Sale Records ...');
 	SaleRecord.find({ status: 'Active' }, (err, saleRecord) => {
 		if (err) res.status(500).send(err);
 		res.status(200).json(saleRecord);
