@@ -7,7 +7,7 @@ const url = prod.database.instances.instanceMongo.url;
 onConnect = async () => {
 try {
 	await mongoose
-	.connect(`mongodb://127.0.0.1:27017/petrolPosDb`, {
+	.connect(url, {
 		useNewUrlParser: true,
 		useFindAndModify: false,
 		useUnifiedTopology: true,

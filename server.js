@@ -5,7 +5,7 @@ const purchaseRecordRoute = require("./api/routes/purchaseRecordRoute");
 const prod = require("./api/utils/prod.json");
 
 require("./api/utils/dbconnect");
-require("./api/utils/init");
+// require("./api/utils/init");
 
 
 const bodyParser= require("body-parser");

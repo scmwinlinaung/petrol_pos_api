@@ -9,7 +9,7 @@
 				"enabled": true,
 				"protocol": "Mongo",
 				"useStringID": true,
-				"url": "mongodb://127.0.0.1:27017/petrolPosDb"
+				"url": "mongodb+srv://winlinaung:winlinaung251943@cluster0.t4xeb.mongodb.net/PetrolPosDb?retryWrites=true&w=majority"
 			}
 		}
 	}

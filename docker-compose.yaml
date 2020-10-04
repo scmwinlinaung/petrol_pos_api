@@ -1,0 +1,21 @@
+version: "3"
+services:
+  mongo:
+    image: "mongo"
+    ports:
+      - "27020:27017"
+    volumes:
+      - mongo-data:/data/db
+  api:
+    image: sakamoto-api
+    build: .
+    command: npm run start
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - "mongo"
+volumes:
+  mongo-data:
