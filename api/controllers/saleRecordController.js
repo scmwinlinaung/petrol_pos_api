@@ -26,23 +26,16 @@ exports.create_a_sale_record = (req, res) => {
 
 exports.read_a_sale_record = (req, res) => {
 	try {
-		console.log(`Find a course ${req.params.courseId}`);
-		Course.findById(req.params.courseId, (err, course) => {
-			let isEnroll = false;
+		console.log(`Find a Sale Record ${req.params.saleRecordId}`);
+		SaleRecord.findById(req.params.saleRecordId, (err, saleRecord) => {
 			if (err) res.status(500).send(err);
-			Enroll.find(
-				{ userID: req.body.userID, courseID: course.courseID },
-				(err, enrolls) => {
-					if (err) res.status(500).send(err);
-					if (enrolls.length > 0) isEnroll = true;
-					console.log(isEnroll);
-
-					res.status(200).json({ course: course, enroll: isEnroll });
-				}
-			);
+			if(saleRecord.status == "Active")
+				res.status(200).json(saleRecord);
+			else
+				res.status(404).send("Sale Record Not Found")
 		});
 	} catch (error) {
-		console.log(`[Get][Course] ${error}`);
+		console.log(`[Get][SaleRecord] ${error}`);
 		res.status(500).send(error);
 	}
 };
@@ -50,16 +43,16 @@ exports.read_a_sale_record = (req, res) => {
 exports.update_a_sale_record = (req, res) => {
 	try {
 		SaleRecord.findOneAndUpdate(
-			{ _id: req.params.courseId },
+			{ _id: req.params.saleRecordId },
 			req.body,
 			{ new: true },
-			(err, course) => {
+			(err, saleRecord) => {
 				if (err) res.status(500).send(err);
-				res.status(200).json(course);
+				res.status(200).json(req.body);
 			}
 		);
 	} catch (error) {
-		console.log(`[Update][Course] ${error}`);
+		console.log(`[Update][SaleRecord] ${error}`);
 		res.status(500).send(error);
 	}
 };
@@ -68,69 +61,96 @@ exports.delete_a_sale_record = (req, res) => {
 	try {
 		SaleRecord.findOneAndUpdate(
 			{
-				_id: req.params.courseId,
+				_id: req.params.saleRecordId,
 			},
 			{ status: 'inactive' },
 			{ new: true },
-			(err, course) => {
+			(err, saleRecord) => {
 				if (err) res.status(500).send(err);
-				res.status(200).json({ message: 'Course successfully deleted' });
+				res.status(200).json({ message: 'Sale Record successfully deleted' });
 			}
 		);
 	} catch (error) {
-		console.log(`[Delete][Course] ${error}`);
+		console.log(`[Delete][SaleRecord] ${error}`);
 		res.status(500).send(error);
 	}
 };
 
-exports.get_a_sale_record = (req, res) => {
-	try {
-		console.log(`Find a course ${req.body.courseId}`);
-		SaleRecord.findById(req.body.courseId, (err, course) => {
-			let isEnroll = false;
-			if (err) res.status(500).send(err);
-			Enroll.find(
-				{ userID: req.body.userID, courseID: course.courseID },
-				(err, enrolls) => {
-					if (err) res.status(500).send(err);
-					if (enrolls.length > 0) isEnroll = true;
-					console.log(isEnroll);
+// exports.get_a_sale_record = (req, res) => {
+// 	try {
+// 		console.log(`Find a course ${req.body.saleRecordId}`);
+// 		SaleRecord.findById(req.body.saleRecordId, (err, saleRecord) => {
+// 			let isEnroll = false;
+// 			if (err) res.status(500).send(err);
+// 			res.status(200).json(saleRecord);
+// 		});
+// 	} catch (error) {
+// 		console.log(`[Get][Course] ${error}`);
+// 		res.status(500).send(error);
+// 	}
+// };
 
-					res.status(200).json({ course: course, enroll: isEnroll });
-				}
-			);
-		});
-	} catch (error) {
-		console.log(`[Get][Course] ${error}`);
-		res.status(500).send(error);
-	}
-};
-
-exports.list_sale_records_with_pagination = (req, res) => {
+exports.list_sale_records_with_pagination = async (req, res) => {
 	try {
 		const options = req.query;
+		console.log(`req.query = ${JSON.stringify(req.query)}`)
 		// validate options, send 400 on error
 		const sort = options.sort || {};
 		const filter = options.filter || {};
 		const limit = 10;
 		const page = parseInt(options.page) || 1;
+
+		Object.keys(sort).map((key) => sort[key] = parseInt(sort[key]));
+		
+		console.log(`sort[key] = ${JSON.stringify(sort)}`)
+		const aggregation = [];
+		if (options.sort) aggregation.push({ $sort: sort });
+
 		const skip = (page - 1) * limit;
-		for(i in sort) {
-			sort[i] = parseInt(sort[i]);
-		}
-		SaleRecord.find(filter)
-			.sort(sort)
-			.skip(skip)
-			.limit(limit, function(err, data) {
-			if(err) {
-				return res.sendStatus(500);
-			} else {
-				return res.status(200).json({
-					meta: { total: data.length },
-					data
-				});
-			}
-		});
+		aggregation.push({ $skip: skip });
+	  
+		if (limit) aggregation.push({ $limit: limit });
+		const saleRecord = await SaleRecord.aggregate(aggregation)
+		return res.status(200).json({
+					meta: {
+					skip,
+					limit,
+					sort,
+					filter,
+					page,
+					total: saleRecord.length,
+					},
+					saleRecord,
+					links: {
+					self: req.originalUrl,
+					}
+				   });
+
+		
+		// SaleRecord.find(filter)
+		// 	.sort(sort)
+		// 	.skip(skip)
+		// 	.limit(limit, (err, saleRecord) => {
+		// 	console.log(`saleRecord = ${saleRecord}`)
+		// 	if(err) {
+		// 		return res.sendStatus(500);
+		// 	} else {
+		// 		return res.status(200).json({
+		// 			meta: {
+		// 			skip,
+		// 			limit,
+		// 			sort,
+		// 			filter,
+		// 			page,
+		// 			total: saleRecord.length,
+		// 			},
+		// 			saleRecord,
+		// 			links: {
+		// 			self: req.originalUrl,
+		// 			}
+		// 		   });
+		// 	}
+		// });
 	} catch(error) {
 		console.log(`[Get][Course] ${error}`);
 		res.status(500).send(error);

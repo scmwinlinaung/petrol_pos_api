@@ -4,18 +4,18 @@ const config = require("./config");
 
 onCreate = async () => {
 	try {
-		const saleRecordID = "$5";
 		const goodType = "Foreign Imported Oil";
-		const customerName = "U Soe Lin Win";
-		const customerPhone = "092016555";
+		const customerName = "Kyaw Soe Thu";
+		const customerPhone = "092016111";
 		const paymentType = "15.11.2030";
 		const total = 120000;
 		const status = "Active";
 		const saleRecord = {
-			saleRecordID: saleRecordID,
-			goodType: goodType,
 			customerName: customerName,
 			customerPhone: customerPhone,
+			goodType: goodType,
+			quantity: 560,
+			rateFixed: 450,
 			paymentType: paymentType,
 			total: total,
 			status: status

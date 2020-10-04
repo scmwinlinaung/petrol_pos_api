@@ -2,15 +2,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-var saleRecordSchema = new Schema(
+var purchaseRecordSchema = new Schema(
 	{
-		customerName: {
+		companyName: {
 			type: String,
 			required: true,
 		},
-		customerPhone: {
+		companyPhone: {
 			type: String,
-			required: true,
+			required: false,
 		},
 		goodType: {
 			type: String,
@@ -18,11 +18,11 @@ var saleRecordSchema = new Schema(
 			index: true,
 		},
 		quantity: {
-			type: Number,
+			type: String,
 			required: true,
 		},
 		rateFixed: {
-			type: Number,
+			type: String,
 			required: true,
 		},
 		paymentType: {
@@ -40,4 +40,4 @@ var saleRecordSchema = new Schema(
 	{ timestamps: true }
 );
 
-module.exports = mongoose.model('SaleRecords', saleRecordSchema);
+module.exports = mongoose.model('PurchaseRecords', purchaseRecordSchema);
