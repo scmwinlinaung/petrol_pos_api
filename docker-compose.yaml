@@ -7,7 +7,7 @@ services:
     volumes:
       - mongo-data:/data/db
   api:
-    image: sakamoto-api
+    image: petrol-pos
     build: .
     command: npm run start
     ports:
