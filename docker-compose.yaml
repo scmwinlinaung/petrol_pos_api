@@ -10,8 +10,6 @@ services:
     image: petrol-pos
     restart: always
     build: .
-    command: nodemon server.js
-    command: npm run start
     ports:
       - "8000:8000"
       - "5858:5858"
