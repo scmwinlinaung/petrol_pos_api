@@ -17,4 +17,3 @@ COPY . .
 
 EXPOSE 8000
 ENTRYPOINT ["nodemon", "/usr/src/app/server.js"]
-CMD ["node","server.js"]
