@@ -1,30 +1,30 @@
 const bcrypt = require("bcryptjs");
-const SaleRecord = require("../models/saleRecordModel");
+const PurchaseRecord = require("../models/purchaseRecordModel");
 const config = require("./config");
 
 onCreate = async () => {
 	try {
 		const goodType = "Foreign Imported Oil";
-		const customerName = "Kyaw Soe Thu";
-		const customerPhone = "092016111";
-		const paymentType = "debt";
-		const total = 120000;
+		const companyName = "BOC";
+		const companyPhone = "09201632";
+		const paymentType = "cash down";
+		const total = 95000;
 		const status = "active";
-		const saleRecord = {
-			customerName: customerName,
-			customerPhone: customerPhone,
+		const purchaseRecord = {
+			companyName: companyName,
+			companyPhone: companyPhone,
 			goodType: goodType,
-			quantity: 560,
+			quantity: 3000,
 			rateFixed: 450,
 			paymentType: paymentType,
 			total: total,
 			status: status
 		};
 
-		const newSaleRecord = new SaleRecord(saleRecord)
+		const newPurchaseRecord = new PurchaseRecord(purchaseRecord)
 
-		await newSaleRecord.save();
-		console.log("on create", saleRecordModel);
+		await newPurchaseRecord.save();
+		console.log("on create", purchaseRecord);
 	} catch (error) {
 		console.log("Default data has been added!!");
 	}

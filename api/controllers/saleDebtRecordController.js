@@ -1,6 +1,6 @@
 'use strict';
 
-var SaleRecord = require('../models/saleRecordModel');
+const SaleRecord = require('../models/saleRecordModel');
 
 exports.list_all_sale_debt_records = (req, res) => {
 	console.log('Finding all Sale Records ...');

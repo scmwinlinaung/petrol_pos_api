@@ -1,6 +1,6 @@
 'use strict';
 
-var User = require('../models/userModel');
+const User = require('../models/userModel');
 const { exists } = require('fs');
 const bcrypt = require("bcryptjs");
 const prod = require("../utils/prod.json");

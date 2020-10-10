@@ -1,6 +1,6 @@
 'use strict';
 
-var PurchaseRecord = require('../models/purchaseRecordModel');
+const PurchaseRecord = require('../models/purchaseRecordModel');
 const { exists } = require('fs');
 
 exports.list_all_purchase_records = (req, res) => {

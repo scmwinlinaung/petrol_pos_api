@@ -18,11 +18,11 @@ var purchaseRecordSchema = new Schema(
 			index: true,
 		},
 		quantity: {
-			type: String,
+			type: Number,
 			required: true,
 		},
 		rateFixed: {
-			type: String,
+			type: Number,
 			required: true,
 		},
 		paymentType: {
