@@ -8,7 +8,6 @@ services:
       - mongo-data:/data/db
   api:
     image: petrol-pos
-    restart: always
     build: .
     ports:
       - "8000:8000"

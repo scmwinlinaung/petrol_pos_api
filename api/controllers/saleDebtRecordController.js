@@ -2,15 +2,15 @@
 
 var SaleRecord = require('../models/saleRecordModel');
 
-exports.list_all_sale_records = (req, res) => {
+exports.list_all_sale_debt_records = (req, res) => {
 	console.log('Finding all Sale Records ...');
-	SaleRecord.find({ status: 'active' }, (err, saleRecord) => {
+	SaleRecord.find({ status: 'active', paymentType: 'debt' }, (err, saleRecord) => {
 		if (err) res.status(500).send(err);
 		res.status(200).json(saleRecord);
 	});
 };
 
-exports.create_a_sale_record = (req, res) => {
+exports.create_a_sale_debt_record = (req, res) => {
 	try {
 		var new_sale_record = new SaleRecord(req.body);
 		new_sale_record.save((err, saleRecord) => {
@@ -23,12 +23,12 @@ exports.create_a_sale_record = (req, res) => {
 	}
 };
 
-exports.read_a_sale_record = (req, res) => {
+exports.read_a_sale_debt_record = (req, res) => {
 	try {
 		console.log(`Find a Sale Record ${req.params.saleRecordId}`);
 		SaleRecord.findById(req.params.saleRecordId, (err, saleRecord) => {
 			if (err) res.status(500).send(err);
-			if(saleRecord.status == "active")
+			if(saleRecord.status == "active" && saleRecord.paymentType == "debt")
 				res.status(200).json(saleRecord);
 			else
 				res.status(404).send("Sale Record Not Found")
@@ -39,10 +39,10 @@ exports.read_a_sale_record = (req, res) => {
 	}
 };
 
-exports.update_a_sale_record = (req, res) => {
+exports.update_a_sale_debt_record = (req, res) => {
 	try {
 		SaleRecord.findOneAndUpdate(
-			{ _id: req.params.saleRecordId },
+			{ _id: req.params.saleRecordId, },
 			req.body,
 			{ new: true },
 			(err, saleRecord) => {
@@ -56,7 +56,7 @@ exports.update_a_sale_record = (req, res) => {
 	}
 };
 
-exports.delete_a_sale_record = (req, res) => {
+exports.delete_a_sale_debt_record = (req, res) => {
 	try {
 		SaleRecord.findOneAndUpdate(
 			{
@@ -89,7 +89,7 @@ exports.delete_a_sale_record = (req, res) => {
 // 	}
 // };
 
-exports.list_sale_records_with_pagination = async (req, res) => {
+exports.list_sale_debt_records_with_pagination = async (req, res) => {
 	try {
 		const options = req.query;
 		console.log(`req.query = ${JSON.stringify(req.query)}`)

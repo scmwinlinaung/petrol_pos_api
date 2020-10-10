@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-var purchaseRecordController = require('../controllers/purchaseRecordController');
+const purchaseRecordController = require('../controllers/purchaseRecordController');
 
 	router
 		.route('/purchase_records')

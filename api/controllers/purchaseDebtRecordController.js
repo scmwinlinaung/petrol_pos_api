@@ -3,15 +3,15 @@
 var PurchaseRecord = require('../models/purchaseRecordModel');
 const { exists } = require('fs');
 
-exports.list_all_purchase_records = (req, res) => {
-	console.log('Finding all Purchase Records...');
-	PurchaseRecord.find({ status: 'active' }, (err, purchaseRecord) => {
+exports.list_all_purchase_debt_records = (req, res) => {
+	console.log('Finding all Purchase Debt Records...');
+	PurchaseRecord.find({ status: 'active', paymentType: 'debt' }, (err, purchaseRecord) => {
 		if (err) res.status(500).send(err);
 		res.status(200).json(purchaseRecord);
 	});
 };
 
-exports.create_a_purchase_record = (req, res) => {
+exports.create_a_purchase_debt_record = (req, res) => {
 	try {
 		var new_purchase_record = new PurchaseRecord(req.body);
 		new_purchase_record.save((err, purchaseRecord) => {
@@ -19,28 +19,28 @@ exports.create_a_purchase_record = (req, res) => {
 			res.status(201).json(purchaseRecord);
 		});
 	} catch (error) {
-		console.log(`[Create][PurchaseRecord] ${error}`);
+		console.log(`[Create][PurchaseDebtRecord] ${error}`);
 		res.status(500).send(error);
 	}
 };
 
-exports.read_a_purchase_record = (req, res) => {
+exports.read_a_purchase_debt_record = (req, res) => {
 	try {
-		console.log(`Find a Purchase Record ${req.params.purchaseRecordId}`);
+		console.log(`Find a Purchase Debt Record ${req.params.purchaseRecordId}`);
 		PurchaseRecord.findById(req.params.purchaseRecordId, (err, purchaseRecord) => {
 			if (err) res.status(500).send(err);
-			if(purchaseRecord.status == "active")
+			if(purchaseRecord.status == "active" && purchaseRecord.paymentType == "debt")
 				res.status(200).json(purchaseRecord);
 			else
-				res.status(404).send("Purchase Record Not Found")
+				res.status(404).send("Purchase Debt Record Not Found")
 		});
 	} catch (error) {
-		console.log(`[Get][PurchaseRecord] ${error}`);
+		console.log(`[Get][PurchaseDebtRecord] ${error}`);
 		res.status(500).send(error);
 	}
 };
 
-exports.update_a_purchase_record = (req, res) => {
+exports.update_a_purchase_debt_record = (req, res) => {
 	try {
 		PurchaseRecord.findOneAndUpdate(
 			{ _id: req.params.purchaseRecordId },
@@ -52,12 +52,12 @@ exports.update_a_purchase_record = (req, res) => {
 			}
 		);
 	} catch (error) {
-		console.log(`[Update][PurchaseRecord] ${error}`);
+		console.log(`[Update][PurchaseDebtRecord] ${error}`);
 		res.status(500).send(error);
 	}
 };
 
-exports.delete_a_purchase_record = (req, res) => {
+exports.delete_a_purchase_debt_record = (req, res) => {
 	try {
 		PurchaseRecord.findOneAndUpdate(
 			{
@@ -67,17 +67,17 @@ exports.delete_a_purchase_record = (req, res) => {
 			{ new: true },
 			(err, purchaseRecord) => {
 				if (err) res.status(500).send(err);
-				res.status(200).json({ message: 'Purchase Record successfully deleted' });
+				res.status(200).json({ message: 'Purchase Debt Record successfully deleted' });
 			}
 		);
 	} catch (error) {
-		console.log(`[Delete][PurchaseRecord] ${error}`);
+		console.log(`[Delete][PurchaseDebtRecord] ${error}`);
 		res.status(500).send(error);
 	}
 };
 
 
-exports.list_purchase_records_with_pagination = async (req, res) => {
+exports.list_purchase_debt_records_with_pagination = async (req, res) => {
 	try {
 		const options = req.query;
 		console.log(`req.query = ${JSON.stringify(req.query)}`)

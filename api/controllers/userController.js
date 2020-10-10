@@ -2,10 +2,13 @@
 
 var User = require('../models/userModel');
 const { exists } = require('fs');
+const bcrypt = require("bcryptjs");
+const prod = require("../utils/prod.json");
+const { generateAccessToken } = require('../middleware/auth');
 
 exports.list_all_users = (req, res) => {
 	console.log('Finding all Users...');
-	User.find({ status: 'Active' }, (err, user) => {
+	User.find({ status: 'active' }, (err, user) => {
 		if (err) res.status(500).send(err);
 		res.status(200).json(user);
 	});
@@ -29,7 +32,7 @@ exports.read_a_user_record = (req, res) => {
 		console.log(`Find a User Record ${req.params.userId}`);
 		User.findById(req.params.userId, (err, user) => {
 			if (err) res.status(500).send(err);
-			if(user.status == "Active")
+			if(user.status == "active")
 				res.status(200).json(user);
 			else
 				res.status(404).send(" User Not Found")
@@ -118,3 +121,63 @@ exports.list_users_with_pagination = async (req, res) => {
 		res.status(500).send(error);
 	}
 };
+
+exports.user_log_in = async (req, res) => {
+	try {
+	User.findOne({
+		name: req.body.name
+	  },
+	  (err, user) => {
+
+		if (err) res.status(500).send(err);
+
+		if (!user) {
+			return res.status(404).send({ message: "User Not found." });
+		}
+
+		const passwordIsValid = bcrypt.compareSync(
+			req.body.password,
+			user.password
+		  );
+	
+		if (!passwordIsValid) {
+			return res.status(401).send({
+			  token: null,
+			  message: "Invalid Password!"
+			});
+		}
+		const token = generateAccessToken(user.id)
+
+		res.status(200).json({ 			
+			name: user.name,
+			phone: user.phone,
+			email: user.email,
+			role: user.role,
+			token: token 
+		});
+	})
+} catch(error) {
+	res.status(500).send(error);
+}
+}
+
+exports.user_log_out = async (req, res) => {
+}
+
+exports.user_sign_up = async(req, res) => {
+	const user = new User({
+		name: req.body.name,
+		phone: req.body.phone,
+		email: req.body.email,
+		password: bcrypt.hashSync(req.body.password, 8),
+		role: req.body.role
+	  });
+	
+	  user.save((err, user) => {
+		if (err) {
+		  res.status(500).send({ message: err });
+		  return;
+		}
+		res.status(200).json({ message: 'User successfully Registered' });
+	});
+}

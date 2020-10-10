@@ -1,5 +1,6 @@
 {
 	"PORT": 8000,
+	"SECRET": "CLMzN8x0nyGxkNpV2o7_Zf3pfb9QcU8AgsjJ_8Yg",
 	"database": {
 		"enabled": true,
 		"defaultInstance": "instanceMongo",

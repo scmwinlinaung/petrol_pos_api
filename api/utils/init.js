@@ -7,9 +7,9 @@ onCreate = async () => {
 		const goodType = "Foreign Imported Oil";
 		const customerName = "Kyaw Soe Thu";
 		const customerPhone = "092016111";
-		const paymentType = "15.11.2030";
+		const paymentType = "debt";
 		const total = 120000;
-		const status = "Active";
+		const status = "active";
 		const saleRecord = {
 			customerName: customerName,
 			customerPhone: customerPhone,

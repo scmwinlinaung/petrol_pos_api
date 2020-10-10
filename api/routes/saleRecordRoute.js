@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-var saleRecordController = require('../controllers/saleRecordController');
+const saleRecordController = require('../controllers/saleRecordController');
 
 	router
 		.route('/sale_records')

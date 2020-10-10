@@ -18,11 +18,17 @@ var userSchema = new Schema(
 			index: true,
 		},
 		password: {
-			type: Number,
+			type: String,
 			required: false,
 		},
+		role: {
+			type: String,
+			required: true
+		}
 	},
 	{ timestamps: true }
 );
+
+userSchema.pre
 
 module.exports = mongoose.model('users', userSchema);
