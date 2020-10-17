@@ -14,7 +14,6 @@ require("./api/utils/dbconnect");
 const bodyParser= require("body-parser");
 
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(bodyParser.json());
 
 app.use("/api/v1", saleRecordRoute);
@@ -24,6 +23,6 @@ app.use("/api/v1", saletDebtRecordRoute)
 app.use("/api/v1", purchaseDebtRecordRoute);
 app.use("/api/v1", inStockRecordRoute);
 
-app.listen(prod.PORT, function() {
- console.log("Petrol Pos Server running at port 8000...");
+app.listen(process.env.PORT || prod.PORT, function() {
+ console.log(`Petrol Pos Server running at port ${prod.PORT}...`);
 });

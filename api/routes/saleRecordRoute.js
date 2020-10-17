@@ -5,6 +5,7 @@ const saleRecordController = require('../controllers/saleRecordController');
 	router
 		.route('/sale_records')
 		.get(saleRecordController.list_all_sale_records)
+		.post(saleRecordController.create_a_sale_record)
 
 	router
 		.route('/sale_records/:saleRecordId')

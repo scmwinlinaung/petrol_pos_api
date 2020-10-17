@@ -4,7 +4,7 @@ const SaleRecord = require('../models/saleRecordModel');
 
 exports.list_all_sale_debt_records = (req, res) => {
 	console.log('Finding all Sale Records ...');
-	SaleRecord.find({ status: 'active', paymentType: 'debt' }, (err, saleRecord) => {
+	SaleRecord.find({ status: 'active', paymentType: 'အကြွေး' }, (err, saleRecord) => {
 		if (err) res.status(500).send(err);
 		res.status(200).json(saleRecord);
 	});
@@ -28,7 +28,7 @@ exports.read_a_sale_debt_record = (req, res) => {
 		console.log(`Find a Sale Record ${req.params.saleRecordId}`);
 		SaleRecord.findById(req.params.saleRecordId, (err, saleRecord) => {
 			if (err) res.status(500).send(err);
-			if(saleRecord.status == "active" && saleRecord.paymentType == "debt")
+			if(saleRecord.status == "active" && saleRecord.paymentType == "အကြွေး")
 				res.status(200).json(saleRecord);
 			else
 				res.status(404).send("Sale Record Not Found")

@@ -5,7 +5,7 @@ const { exists } = require('fs');
 
 exports.list_all_purchase_debt_records = (req, res) => {
 	console.log('Finding all Purchase Debt Records...');
-	PurchaseRecord.find({ status: 'active', paymentType: 'debt' }, (err, purchaseRecord) => {
+	PurchaseRecord.find({ status: 'active', paymentType: 'အကြွေး' }, (err, purchaseRecord) => {
 		if (err) res.status(500).send(err);
 		res.status(200).json(purchaseRecord);
 	});
@@ -29,7 +29,7 @@ exports.read_a_purchase_debt_record = (req, res) => {
 		console.log(`Find a Purchase Debt Record ${req.params.purchaseRecordId}`);
 		PurchaseRecord.findById(req.params.purchaseRecordId, (err, purchaseRecord) => {
 			if (err) res.status(500).send(err);
-			if(purchaseRecord.status == "active" && purchaseRecord.paymentType == "debt")
+			if(purchaseRecord.status == "active" && purchaseRecord.paymentType == "အကြွေး")
 				res.status(200).json(purchaseRecord);
 			else
 				res.status(404).send("Purchase Debt Record Not Found")

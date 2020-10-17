@@ -5,6 +5,7 @@ const saleDebtRecordController = require('../controllers/saleDebtRecordControlle
 	router
 		.route('/sale_debt_records')
 		.get(saleDebtRecordController.list_all_sale_debt_records)
+		.post(saleDebtRecordController.create_a_sale_debt_record)
 
 	router
 		.route('/sale_debt_records/:saleRecordId')

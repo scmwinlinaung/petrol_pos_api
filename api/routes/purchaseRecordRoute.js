@@ -5,6 +5,7 @@ const purchaseRecordController = require('../controllers/purchaseRecordControlle
 	router
 		.route('/purchase_records')
 		.get(purchaseRecordController.list_all_purchase_records)
+		.post(purchaseRecordController.create_a_purchase_record)
 
 	router
 		.route('/purchase_records/:purchaseRecordId')
