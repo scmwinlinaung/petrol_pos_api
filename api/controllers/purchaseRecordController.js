@@ -93,7 +93,7 @@ exports.list_purchase_records_with_pagination = async (req, res) => {
 		console.log(`sort[key] = ${JSON.stringify(sort)}`)
 		const aggregation = [];
 
-		if (search) {
+		if (options.search) {
 			let searchStr = search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 				const regex = new RegExp(`${searchStr}*[a-zA-Z0-9!@#$%^&)(+=._\\-\\*]*`, "i");
 			  aggregation.push({
