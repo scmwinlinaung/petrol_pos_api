@@ -100,6 +100,9 @@ exports.list_users_with_pagination = async (req, res) => {
 		aggregation.push({ $skip: skip });
 	  
 		if (limit) aggregation.push({ $limit: limit });
+
+		aggregation.push({ $match: { status: 'active' }})
+
 		const user = await User.aggregate(aggregation)
 		return res.status(200).json({
 					meta: {

@@ -119,6 +119,9 @@ exports.list_purchase_debt_records_with_pagination = async (req, res) => {
 		aggregation.push({ $skip: skip });
 	  
 		if (limit) aggregation.push({ $limit: limit });
+
+		aggregation.push({ $match: { status: 'active' }})
+
 		const purchaseRecord = await PurchaseRecord.aggregate(aggregation)
 		return res.status(200).json({
 					meta: {
