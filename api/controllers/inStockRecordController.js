@@ -23,8 +23,6 @@ exports.list_all_in_stock_records = async (req, res) => {
         const sumOfEachPurchaseItem = await PurchaseRecord.aggregate(aggregation);
         const sumOfEachSaleItem = await SaleRecord.aggregate(aggregation);
         let inStockOfEachItem = [];
-        console.log(sumOfEachPurchaseItem);
-        console.log(sumOfEachSaleItem);
 
         Object.keys(sumOfEachPurchaseItem).map((index) => {
             let total = 0;
