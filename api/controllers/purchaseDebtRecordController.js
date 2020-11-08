@@ -123,7 +123,11 @@ exports.list_purchase_debt_records_with_pagination = async (req, res) => {
 		if (limit) aggregation.push({ $limit: limit });
 
 		aggregation.push({ $match: { status: 'active', paymentType: 'အကြွေး' }})
-
+		
+		const totalDebt = (await PurchaseRecord.find({ status: 'active', paymentType: 'အကြွေး' }))
+		.reduce((prev, element) =>  {
+			return prev += element.total
+		}, 0);
 		const total = (await PurchaseRecord.find({ status: 'active', paymentType: 'အကြွေး' })).length;
 
 		const purchaseRecord = await PurchaseRecord.aggregate(aggregation)
@@ -135,6 +139,7 @@ exports.list_purchase_debt_records_with_pagination = async (req, res) => {
 					filter,
 					page,
 					total: total,
+					totalDebt: totalDebt,
 					},
 					purchaseRecord,
 					links: {
