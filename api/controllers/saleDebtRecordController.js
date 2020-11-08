@@ -105,7 +105,7 @@ exports.list_sale_debt_records_with_pagination = async (req, res) => {
 		console.log(`sort[key] = ${JSON.stringify(sort)}`)
 		const aggregation = [];
 
-		if (search) {
+		if (options.search) {
 			let searchStr = search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 				const regex = new RegExp(`${searchStr}*[a-zA-Z0-9!@#$%^&)(+=._\\-\\*]*`, "i");
 			  aggregation.push({
@@ -133,9 +133,9 @@ exports.list_sale_debt_records_with_pagination = async (req, res) => {
 	  
 		if (limit) aggregation.push({ $limit: limit });
 
-		aggregation.push({ $match: { status: 'active' }})
+		aggregation.push({ $match: { status: 'active', paymentType: 'အကြွေး' }})
 
-		const total = (await SaleRecord.find({ status: 'active' })).length;
+		const total = (await SaleRecord.find({ status: 'active', paymentType: 'အကြွေး' })).length;
 
 		const saleRecord = await SaleRecord.aggregate(aggregation)
 		return res.status(200).json({

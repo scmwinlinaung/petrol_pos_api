@@ -85,14 +85,15 @@ exports.list_purchase_debt_records_with_pagination = async (req, res) => {
 		const sort = options.sort || {};
 		const filter = options.filter || {};
 		const search = options.search || {};
-		const limit =  parseInt(options.limit) || 20;
+		const limit = parseInt(options.limit) || 20;
 		const page = parseInt(options.page) || 0;
 
 		Object.keys(sort).map((key) => sort[key] = parseInt(sort[key]));
+		
 		console.log(`sort[key] = ${JSON.stringify(sort)}`)
 		const aggregation = [];
 
-		if (search) {
+		if (options.search) {
 			let searchStr = search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 				const regex = new RegExp(`${searchStr}*[a-zA-Z0-9!@#$%^&)(+=._\\-\\*]*`, "i");
 			  aggregation.push({
@@ -113,6 +114,7 @@ exports.list_purchase_debt_records_with_pagination = async (req, res) => {
 		  
 		  } 
 
+
 		if (options.sort) aggregation.push({ $sort: sort });
 
 		const skip = page * limit;
@@ -120,9 +122,9 @@ exports.list_purchase_debt_records_with_pagination = async (req, res) => {
 	  
 		if (limit) aggregation.push({ $limit: limit });
 
-		aggregation.push({ $match: { status: 'active' }})
-		
-		const total = (await PurchaseRecord.find({ status: 'active' })).length;
+		aggregation.push({ $match: { status: 'active', paymentType: 'အကြွေး' }})
+
+		const total = (await PurchaseRecord.find({ status: 'active', paymentType: 'အကြွေး' })).length;
 
 		const purchaseRecord = await PurchaseRecord.aggregate(aggregation)
 		return res.status(200).json({
