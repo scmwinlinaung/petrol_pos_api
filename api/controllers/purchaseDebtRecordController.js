@@ -85,7 +85,7 @@ exports.list_purchase_debt_records_with_pagination = async (req, res) => {
 		const sort = options.sort || {};
 		const filter = options.filter || {};
 		const search = options.search || {};
-		const limit = options.limit || 20;
+		const limit =  parseInt(options.limit) || 20;
 		const page = parseInt(options.page) || 0;
 
 		Object.keys(sort).map((key) => sort[key] = parseInt(sort[key]));
@@ -121,6 +121,8 @@ exports.list_purchase_debt_records_with_pagination = async (req, res) => {
 		if (limit) aggregation.push({ $limit: limit });
 
 		aggregation.push({ $match: { status: 'active' }})
+		
+		const total = (await PurchaseRecord.find({ status: 'active' })).length;
 
 		const purchaseRecord = await PurchaseRecord.aggregate(aggregation)
 		return res.status(200).json({
@@ -130,7 +132,7 @@ exports.list_purchase_debt_records_with_pagination = async (req, res) => {
 					sort,
 					filter,
 					page,
-					total: purchaseRecord.length,
+					total: total,
 					},
 					purchaseRecord,
 					links: {

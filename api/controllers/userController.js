@@ -87,7 +87,7 @@ exports.list_users_with_pagination = async (req, res) => {
 		// validate options, send 400 on error
 		const sort = options.sort || {};
 		const filter = options.filter || {};
-		const limit = options.limit || 20;
+		const limit = parseInt(options.limit) || 20;
 		const page = parseInt(options.page) || 0;
 
 		Object.keys(sort).map((key) => sort[key] = parseInt(sort[key]));
@@ -103,6 +103,8 @@ exports.list_users_with_pagination = async (req, res) => {
 
 		aggregation.push({ $match: { status: 'active' }})
 
+		const total = (await User.find({ status: 'active' })).length;
+
 		const user = await User.aggregate(aggregation)
 		return res.status(200).json({
 					meta: {
@@ -111,7 +113,7 @@ exports.list_users_with_pagination = async (req, res) => {
 					sort,
 					filter,
 					page,
-					total: user.length,
+					total: total,
 					},
 					user,
 					links: {
