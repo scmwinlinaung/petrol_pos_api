@@ -88,7 +88,7 @@ exports.list_users_with_pagination = async (req, res) => {
 		const sort = options.sort || {};
 		const filter = options.filter || {};
 		const limit = 10;
-		const page = parseInt(options.page) || 1;
+		const page = parseInt(options.page) || 0;
 
 		Object.keys(sort).map((key) => sort[key] = parseInt(sort[key]));
 		
@@ -96,7 +96,7 @@ exports.list_users_with_pagination = async (req, res) => {
 		const aggregation = [];
 		if (options.sort) aggregation.push({ $sort: sort });
 
-		const skip = (page - 1) * limit;
+		const skip = page * limit;
 		aggregation.push({ $skip: skip });
 	  
 		if (limit) aggregation.push({ $limit: limit });

@@ -86,7 +86,7 @@ exports.list_purchase_records_with_pagination = async (req, res) => {
 		const filter = options.filter || {};
 		const search = options.search || {};
 		const limit = null;
-		const page = parseInt(options.page) || 1;
+		const page = parseInt(options.page) || 0;
 
 		Object.keys(sort).map((key) => sort[key] = parseInt(sort[key]));
 		
@@ -117,7 +117,7 @@ exports.list_purchase_records_with_pagination = async (req, res) => {
 
 		if (options.sort) aggregation.push({ $sort: sort });
 
-		const skip = (page - 1) * limit;
+		const skip = page * limit;
 		aggregation.push({ $skip: skip });
 	  
 		if (limit) aggregation.push({ $limit: limit });
