@@ -87,7 +87,7 @@ exports.list_users_with_pagination = async (req, res) => {
 		// validate options, send 400 on error
 		const sort = options.sort || {};
 		const filter = options.filter || {};
-		const limit = 10;
+		const limit = options.limit || 20;
 		const page = parseInt(options.page) || 0;
 
 		Object.keys(sort).map((key) => sort[key] = parseInt(sort[key]));

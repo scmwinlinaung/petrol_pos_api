@@ -85,7 +85,7 @@ exports.list_purchase_debt_records_with_pagination = async (req, res) => {
 		const sort = options.sort || {};
 		const filter = options.filter || {};
 		const search = options.search || {};
-		const limit = null;
+		const limit = options.limit || 20;
 		const page = parseInt(options.page) || 0;
 
 		Object.keys(sort).map((key) => sort[key] = parseInt(sort[key]));
