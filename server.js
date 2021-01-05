@@ -6,8 +6,8 @@ const userRoute = require("./api/routes/userRoute");
 const saletDebtRecordRoute = require("./api/routes/saleDebtRecordRoute");
 const purchaseDebtRecordRoute = require("./api/routes/purchaseDebtRecordRoute");
 const inStockRecordRoute = require("./api/routes/inStockRecordRoute");
-const monthlySaleReportRoute = require("./api/routes/montlySaleReportRoute");
 const monthlyPurchaseReportRoute = require("./api/routes/monthlyPurchaseReportRoute");
+const saleReportRoute = require("./api/routes/saleReportRoute");
 
 const prod = require("./api/utils/prod.json");
 
@@ -24,8 +24,8 @@ app.use("/api/v1", userRoute);
 app.use("/api/v1", saletDebtRecordRoute)
 app.use("/api/v1", purchaseDebtRecordRoute);
 app.use("/api/v1", inStockRecordRoute);
-app.use("/api/v1", monthlySaleReportRoute);
 app.use("/api/v1", monthlyPurchaseReportRoute)
+app.use("/api/v1", saleReportRoute);
 
 app.listen(process.env.PORT || prod.PORT, function() {
  console.log(`Petrol Pos Server running at port ${prod.PORT}...`);
