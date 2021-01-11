@@ -93,6 +93,8 @@ exports.list_purchase_debt_records_with_pagination = async (req, res) => {
 		console.log(`sort[key] = ${JSON.stringify(sort)}`)
 		const aggregation = [];
 
+		aggregation.push({ $match: { status: 'active', paymentType: 'အကြွေး' }})
+
 		if (options.search) {
 			let searchStr = search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 				const regex = new RegExp(`${searchStr}*[a-zA-Z0-9!@#$%^&)(+=._\\-\\*]*`, "i");
@@ -114,7 +116,6 @@ exports.list_purchase_debt_records_with_pagination = async (req, res) => {
 		  
 		  } 
 
-
 		if (options.sort) aggregation.push({ $sort: sort });
 
 		const skip = page * limit;
@@ -122,7 +123,7 @@ exports.list_purchase_debt_records_with_pagination = async (req, res) => {
 	  
 		if (limit) aggregation.push({ $limit: limit });
 
-		aggregation.push({ $match: { status: 'active', paymentType: 'အကြွေး' }})
+	
 		
 		const totalDebt = (await PurchaseRecord.find({ status: 'active', paymentType: 'အကြွေး' }))
 		.reduce((prev, element) =>  {
