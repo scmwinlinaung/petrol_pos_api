@@ -17,6 +17,7 @@ exports.list_daily_sale_reports = async (req, res) => {
         aggregation.push(
             {
                 $project: {
+                    day: { $dayOfMonth: "$createdAt" },
                     month: { $month: '$createdAt' }, year: { $year: '$createdAt' }
                     , quantity: '$quantity', rateFixed: '$rateFixed', goodType: '$goodType'
                 }
@@ -28,6 +29,7 @@ exports.list_daily_sale_reports = async (req, res) => {
             {
                 $group: {
                     _id: {
+                        day: "$day",
                         month: "$month",
                         year: "$year",
                         goodType: "$goodType"
@@ -114,7 +116,7 @@ exports.list_yearly_sale_reports = async (req, res) => {
         aggregation.push(
             {
                 $project: {
-                    month: { $month: '$createdAt' },year: { $year: '$createdAt' }
+                    month: { $month: '$createdAt' }, year: { $year: '$createdAt' }
                     , quantity: '$quantity', rateFixed: '$rateFixed', goodType: '$goodType'
                 }
             },
