@@ -2,14 +2,14 @@ version: "3"
 services:
   mongo:
     image: "mongo"
+    hostname: "mongo1"
     ports:
       - "27020:27017"
     volumes:
       - mongo-data:/data/db
   api:
     image: petrol-pos
-    build: .
-    command: npm run prod-start
+    hostname: pos_api
     ports:
       - "8000:8000"
       - "5858:5858"
