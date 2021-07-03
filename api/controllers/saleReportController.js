@@ -11,15 +11,19 @@ exports.list_daily_sale_reports = async (req, res) => {
         const aggregation = [];
         aggregation.push({
             $match: {
-                status: 'active', $expr: {  // get current month and current year sale reports
-                    $eq: [{ $month: "$createdAt" }, currentMonth],
-                    $eq: [{ $year: "$createdAt" }, currentYear]
-                }
+                status: 'active'
             }
         })
-        // aggregation.push({
-
-        //   });
+        aggregation.push(
+            {
+                $project: {
+                    month: { $month: '$createdAt' }, year: { $year: '$createdAt' }
+                    , quantity: '$quantity', rateFixed: '$rateFixed'
+                }
+            },
+            { $match: { month: currentMonth + 1 } },
+            { $match: { year: currentYear } },
+        );
         aggregation.push(
             {
                 $group: {
@@ -56,18 +60,26 @@ exports.list_monthly_sale_reports = async (req, res) => {
         const aggregation = [];
         aggregation.push({
             $match: {
-                status: 'active', $expr: {  // get current month and current year sale reports
-                    $eq: [{ $month: "$createdAt" }, currentMonth],
-                    $eq: [{ $year: "$createdAt" }, currentYear]
-                }
+                status: 'active'
             }
         })
+
+        aggregation.push(
+            {
+                $project: {
+                    month: { $month: '$createdAt' }, year: { $year: '$createdAt' }
+                    , quantity: '$quantity', rateFixed: '$rateFixed'
+                }
+            },
+            { $match: { month: currentMonth + 1 } },
+            { $match: { year: currentYear } },
+        );
         aggregation.push(
             {
                 $group: {
                     _id: {
-                        month: { $month: "$createdAt" },
-                        year: { $year: "$createdAt" },
+                        month: "$month",
+                        year: "$year",
                         goodType: "$goodType"
                     },
                     totalOfQty: { $sum: "$quantity" },
@@ -87,25 +99,33 @@ exports.list_monthly_sale_reports = async (req, res) => {
 exports.list_yearly_sale_reports = async (req, res) => {
     try {
 
-        console.log('Finding Monthly Sale Reports ...');
+        console.log('Finding Yearly Sale Reports ...');
         const date = new Date();
         const currentYear = date.getFullYear();
-        const currentMonth = date.getMonth();
 
         const aggregation = [];
         aggregation.push({
             $match: {
-                status: 'active', $expr: {  // get  current year sale reports
-                    $eq: [{ $year: "$createdAt" }, currentYear]
-                }
+                status: 'active'
             }
         })
+
+
+        aggregation.push(
+            {
+                $project: {
+                    year: { $year: '$createdAt' }
+                    , quantity: '$quantity', rateFixed: '$rateFixed'
+                }
+            },
+            { $match: { year: currentYear } },
+        );
         aggregation.push(
             {
                 $group: {
                     _id: {
-                        month: { $month: "$createdAt" },
-                        year: { $year: "$createdAt" },
+                        month: "$month",
+                        year: "$year",
                         goodType: "$goodType"
                     },
                     totalOfQty: { $sum: "$quantity" },

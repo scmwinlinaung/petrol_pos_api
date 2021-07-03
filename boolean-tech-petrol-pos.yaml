@@ -10,6 +10,8 @@ services:
   api:
     image: petrol-pos
     hostname: pos_api
+    build: .
+    command: npm run prod-start
     ports:
       - "8000:8000"
       - "5858:5858"
