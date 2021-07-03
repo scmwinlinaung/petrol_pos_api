@@ -18,7 +18,7 @@ exports.list_daily_sale_reports = async (req, res) => {
             {
                 $project: {
                     month: { $month: '$createdAt' }, year: { $year: '$createdAt' }
-                    , quantity: '$quantity', rateFixed: '$rateFixed'
+                    , quantity: '$quantity', rateFixed: '$rateFixed', goodType: '$goodType'
                 }
             },
             { $match: { month: currentMonth + 1 } },
@@ -28,9 +28,9 @@ exports.list_daily_sale_reports = async (req, res) => {
             {
                 $group: {
                     _id: {
-                        month: { $month: "$createdAt" },
-                        year: { $year: "$createdAt" },
-                        day: { $dayOfMonth: "$createdAt" },
+                        month: "$month",
+                        year: "$year",
+                        goodType: "$goodType"
 
                     },
                     totalOfQty: { $sum: "$quantity" },
@@ -68,7 +68,7 @@ exports.list_monthly_sale_reports = async (req, res) => {
             {
                 $project: {
                     month: { $month: '$createdAt' }, year: { $year: '$createdAt' }
-                    , quantity: '$quantity', rateFixed: '$rateFixed'
+                    , quantity: '$quantity', rateFixed: '$rateFixed', goodType: '$goodType'
                 }
             },
             { $match: { month: currentMonth + 1 } },
@@ -114,8 +114,8 @@ exports.list_yearly_sale_reports = async (req, res) => {
         aggregation.push(
             {
                 $project: {
-                    year: { $year: '$createdAt' }
-                    , quantity: '$quantity', rateFixed: '$rateFixed'
+                    month: { $month: '$createdAt' },year: { $year: '$createdAt' }
+                    , quantity: '$quantity', rateFixed: '$rateFixed', goodType: '$goodType'
                 }
             },
             { $match: { year: currentYear } },
